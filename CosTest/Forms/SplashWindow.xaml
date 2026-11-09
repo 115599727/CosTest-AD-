@@ -1,0 +1,31 @@
+﻿<Window x:Class="CosTest.SplashWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CosTest"
+        mc:Ignorable="d"
+        Title="启动画面" Height="200" Width="400" Icon="/Resources/Vsstec.ico" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize" Topmost="True">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="WhiteSmoke" Offset="1"/>
+                <GradientStop Color="LightBlue"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <!--定义了5行-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="25*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="2" Orientation ="Horizontal" HorizontalAlignment="Center" Margin="14,0,1,0" >
+            <Image Source="/Resources/Company.png" Stretch="Fill" Width="150" Margin="10,0" />
+            <TextBlock Text="激光器测试系统" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Margin="20,0,30,0"/>
+        </StackPanel>
+        <TextBlock Grid.Row="4" Text="正在初始化 ... ..." Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="144,6,130,5"/>
+    </Grid>
+</Window>

@@ -1,0 +1,13 @@
+﻿<Window x:Class="CosTest.ReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:CosTest"
+        mc:Ignorable="d"
+        Title="测试报告正在打印中..." Height="935" Width="650" Topmost="True" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+    <Grid x:Name="LayoutRoot">
+        <DocumentViewer x:Name="docViewer"/>
+    </Grid>
+</Window>

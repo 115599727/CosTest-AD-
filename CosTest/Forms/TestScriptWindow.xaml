@@ -1,0 +1,678 @@
+﻿<Window x:Class="CosTest.TestScriptWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:CosTest"
+        mc:Ignorable="d"
+        Title="编辑测试程序" Height="700" Width="1024" WindowStyle="None" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Icon="/Resources/Vsstec.ico">
+    <Grid>
+        <Border BorderBrush="Black" BorderThickness="1" Margin="0"/>
+        <Grid Margin="1">
+            <!--定义了2行-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="100*"/>
+            </Grid.RowDefinitions>
+            <!--标题栏-->
+            <Grid x:Name="gridCaption" Grid.Row="0" MouseLeftButtonDown="gridCaption_MouseLeftButtonDown" Background="#FF1565C0">
+                <Image x:Name="image" Source="/Resources/Test.png" HorizontalAlignment="Left" Height="40"  VerticalAlignment="Center" Width="40" Margin="10,0,0,0"/>
+                <TextBlock Text="编辑测试程序" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="75,0,0,0" FontSize="21.333" Foreground="White"/>
+                <Button x:Name="buttonClose" Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource CloseGeometry}" Padding="4" ToolTip="关闭" Width="24" Height="24" Margin="5,0,10,0" Click="buttonClose_Click" HorizontalAlignment="Right"/>
+            </Grid>
+            <!--主界面-->
+            <Grid Grid.Row="1" Margin="10,5,10,10">
+                <!--定义了2行-->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="100*"/>
+                </Grid.RowDefinitions>
+                <!--增删程序-->
+                <StackPanel Orientation="Horizontal" Margin="0,10">
+                    <TextBlock Text="当前程序 :" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
+                    <ComboBox x:Name="cbRoutineNameList" ItemsSource="{Binding RoutineNameList}" SelectedItem="{Binding SelRoutineName}" Width="256" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0" Padding="0" SelectionChanged="cbRoutineNameList_SelectionChanged" />
+                    <Button x:Name="buttonSave" Style="{StaticResource ButtonSuccess}" ToolTip="保存当前程序的变更" Content="保存" VerticalAlignment="Center" Margin="10,0"  Width="80" Click="buttonSave_Click" />
+                    <Button x:Name="buttonSaveAs" Style="{StaticResource ButtonSuccess}" ToolTip="创建程序副本并保存变更" Content="另存为" VerticalAlignment="Center" Margin="10,0"  Width="80" Click="buttonSaveAs_Click" />
+                    <Button x:Name="buttonNew" Style="{StaticResource ButtonSuccess}" ToolTip="新建空白程序" Content="新建" VerticalAlignment="Center" Margin="10,0"  Width="80" Click="buttonNew_Click" />
+                    <Button x:Name="buttonDelete" Style="{StaticResource ButtonSuccess}" ToolTip="删除当前程序" Content="删除" VerticalAlignment="Center" Margin="10,0"  Width="80" Click="buttonDelete_Click" />
+                    <Button x:Name="buttonRename" Style="{StaticResource ButtonSuccess}" ToolTip="重命名当前程序" Content="重命名" VerticalAlignment="Center" Margin="10,0"  Width="80" Click="buttonRename_Click" />
+                </StackPanel>
+                <!--参数设置-->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="150*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" Margin="2,0,2,0">
+                        <StackPanel>
+                            <!--LIV扫描-->
+                            <Expander Header="测试温度">
+                                <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                    <TextBlock Text="温度@" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                    <ComboBox x:Name="cbTempList" Style="{StaticResource ComboBoxBaseStyle}" ItemsSource="{Binding TemperatureList}" SelectedItem="{Binding Temperature}" BorderBrush="CadetBlue" BorderThickness="1.5" Width="60" HorizontalAlignment="Center" Height="25" Margin="5,0,5,0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MinHeight="25"/>
+                                    <Button x:Name="buttonTempDelete" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}" Padding="4" ToolTip="删除" Width="20" Height="20" Click="buttonTempDelete_Click"/>
+                                    <TextBox x:Name="tbTempValue" Text="{Binding TemperatureNewValue}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="40" Padding="1"/>
+                                    <Button x:Name="buttonTempAdd" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource AddGeometry}" Padding="4" ToolTip="新增" Width="20" Height="20"  Margin="5,0,5,0" Click="buttonTempAdd_Click"/>
+                                </StackPanel>
+                            </Expander>
+                            <!--LIV扫描-->
+                            <Expander Header="LIV扫描" Margin="0,10,0,0">
+                                <StackPanel Margin="0,6,0,0">
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="激光器电压上限(V):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                        <TextBox Text="{Binding PreloadingVoltage}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="50" Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="起始电流(A):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                        <TextBox Text="{Binding LivStart}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="50" Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="终止电流(A):" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                        <TextBox Text="{Binding LivStop}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="50" Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="步进电流(A):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding LivStep}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="50" Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="步进时间(ms):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding LivDelay}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="50" Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="VF曲线 :" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}" IsChecked="{Binding LivIsShowVF}"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="EFF曲线 :" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}" IsChecked="{Binding LivIsShowEFF}"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="预加载电流(A):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding PreloadingCurrent}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="50" Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="短路电压阈值(V):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding ShortVoltThresh}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="50" Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="开路电流阈值(A):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding OpenCurrentThresh}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="50" Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="电流容差(A):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding CurrentTol}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="50" Padding="1"/>
+                                    </UniformGrid>
+                                </StackPanel>
+                            </Expander>
+                            <!--光谱扫描-->
+                            <Expander Header="光谱扫描" Margin="0,10,0,0">
+                                <StackPanel Margin="0,5,0,0">
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="基准波长(nm):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <ComboBox x:Name="cbSpWavelengthBaseList" Style="{StaticResource ComboBoxBaseStyle}" ItemsSource="{Binding SpWavelengthBaseList}" SelectedItem="{Binding SpWavelengthBase}" BorderBrush="CadetBlue" BorderThickness="1.5" Width="60" HorizontalAlignment="Center" Height="25" Margin="5,0,5,0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MinHeight="25"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="扫描范围+(nm):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding SpWavelengthScopePositive}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="60"  Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="扫描范围- (nm):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding SpWavelengthScopeNegative}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="60"  Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="自动积分时间 :" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}" IsChecked="{Binding SpIsAutoIntegrationTime}"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="积分时间(ms):" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding SpIntegrationTime}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="60"  Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="平滑点数 :" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding SpBoxcarWidth}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="60"  Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="扫描次数 :" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding SpNumberOfScansToAverage}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="60" Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="高斯拟合 :" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}" IsChecked="{Binding SpIsGaussFit}"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="PIB总半宽(nm) :" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding SpPibTotalHalfSpan}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="60" Padding="1"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="1" Height="30">
+                                        <TextBlock Text="PIB中心半宽(nm) :" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+                                        <TextBox Text="{Binding SpPibCenterHalfSpan}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="60" Padding="1"/>
+                                    </UniformGrid>
+                                    <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center">
+                                        <TextBlock Text="驱动@" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                        <ComboBox x:Name="cbSpDriveList" Style="{StaticResource ComboBoxBaseStyle}" ItemsSource="{Binding SpDriveList}" SelectedItem="{Binding SpDrive}" BorderBrush="CadetBlue" BorderThickness="1.5" Width="65" HorizontalAlignment="Center" Height="25" Margin="5,0,5,0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MinHeight="25"/>
+                                        <Button x:Name="buttonSpDriveDelete" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}" Padding="4" ToolTip="删除" Width="20" Height="20" Click="buttonSpDriveDelete_Click" />
+                                        <TextBox x:Name="tbSpDriveValue" Text="{Binding SpNewDriveValue}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Height="25" Width="40" Padding="1"/>
+                                        <ToggleButton Style="{StaticResource ToggleButtonCustom}" IsChecked="{Binding SpNewDriveType}" Width="20" Height="20" HorizontalAlignment="Right">
+                                            <hc:StatusSwitchElement.CheckedElement>
+                                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="A" Background="{DynamicResource SuccessBrush}" Foreground="{DynamicResource TextIconBrush}" Padding="5,5,5,5"/>
+                                            </hc:StatusSwitchElement.CheckedElement>
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="W" Background="{DynamicResource WarningBrush}" Foreground="{DynamicResource TextIconBrush}" Padding="5,5,5,5"/>
+                                        </ToggleButton>
+                                        <Button x:Name="buttonSpDriveAdd" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource AddGeometry}" Padding="4" ToolTip="新增" Width="20" Height="20"  Margin="5,0,5,0" Click="buttonSpDriveAdd_Click"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Expander>
+                            <!--数值孔径-->
+                            <Expander Header="数值孔径" Margin="0,10,0,0">
+                                <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                    <TextBlock Text="驱动@" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                    <ComboBox x:Name="cbNaDriveList" Style="{StaticResource ComboBoxBaseStyle}" ItemsSource="{Binding NaDriveList}" SelectedItem="{Binding NaDrive}" BorderBrush="CadetBlue" BorderThickness="1.5" Width="65" HorizontalAlignment="Center" Height="25" Margin="5,0,5,0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MinHeight="25"/>
+                                    <Button x:Name="buttonNaDriveDelete" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}" Padding="4" ToolTip="删除" Width="20" Height="20" Click="buttonNaDriveDelete_Click" />
+                                    <TextBox x:Name="tbNaDrive" Text="{Binding NaNewDriveValue}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" Height="25" VerticalContentAlignment="Center" Width="40" Padding="1"/>
+                                    <ToggleButton Style="{StaticResource ToggleButtonCustom}" IsChecked="{Binding NaNewDriveType}" Width="20" Height="20" HorizontalAlignment="Right">
+                                        <hc:StatusSwitchElement.CheckedElement>
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="A" Background="{DynamicResource SuccessBrush}" Foreground="{DynamicResource TextIconBrush}" Padding="5,5,5,5"/>
+                                        </hc:StatusSwitchElement.CheckedElement>
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="W" Background="{DynamicResource WarningBrush}" Foreground="{DynamicResource TextIconBrush}" Padding="5,5,5,5"/>
+                                    </ToggleButton>
+                                    <Button x:Name="buttonNaDriveAdd" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource AddGeometry}" Padding="4" ToolTip="新增" Width="20" Height="20"  Margin="5,0,5,0" Click="buttonNaDriveAdd_Click" />
+                                </StackPanel>
+                            </Expander>
+                            <!--光斑扫描-->
+                            <Expander Header="光斑扫描" Margin="0,10,0,0">
+                                <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                    <TextBlock Text="驱动@" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                    <ComboBox x:Name="cbBeamDriveList" Style="{StaticResource ComboBoxBaseStyle}" ItemsSource="{Binding BeamDriveList}" SelectedItem="{Binding BeamDrive}" BorderBrush="CadetBlue" BorderThickness="1.5" Width="65" HorizontalAlignment="Center" Height="25" Margin="5,0,5,0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MinHeight="25"/>
+                                    <Button x:Name="buttonBeamDriveDelete" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}" Padding="4" ToolTip="删除" Width="20" Height="20" Click="buttonBeamDriveDelete_Click" />
+                                    <TextBox x:Name="tbBeamDrive" Text="{Binding BeamNewDriveValue}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" Height="25" VerticalContentAlignment="Center" Width="40" Padding="1"/>
+                                    <ToggleButton Style="{StaticResource ToggleButtonCustom}" IsChecked="{Binding BeamNewDriveType}" Width="20" Height="20" HorizontalAlignment="Right">
+                                        <hc:StatusSwitchElement.CheckedElement>
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="A" Background="{DynamicResource SuccessBrush}" Foreground="{DynamicResource TextIconBrush}" Padding="5,5,5,5"/>
+                                        </hc:StatusSwitchElement.CheckedElement>
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="W" Background="{DynamicResource WarningBrush}" Foreground="{DynamicResource TextIconBrush}" Padding="5,5,5,5"/>
+                                    </ToggleButton>
+                                    <Button x:Name="buttonBeamDriveAdd" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource AddGeometry}" Padding="4" ToolTip="新增" Width="20" Height="20"  Margin="5,0,5,0" Click="buttonBeamDriveAdd_Click" />
+                                </StackPanel>
+                            </Expander>
+                            <!--热像扫描-->
+                            <Expander Header="热像扫描" Margin="0,10,0,0" Visibility="{Binding ThermCamVisibility}">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                        <TextBlock Text="驱动@" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                        <ComboBox x:Name="cbThermalCameraDriveList" Style="{StaticResource ComboBoxBaseStyle}" ItemsSource="{Binding ThermalCameraDriveList}" SelectedItem="{Binding ThermalCameraDrive}" BorderBrush="CadetBlue" BorderThickness="1.5" Width="65" HorizontalAlignment="Center" Height="25" Margin="5,0,5,0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MinHeight="25"/>
+                                        <Button x:Name="buttonThermalCameraDriveDelete" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}" Padding="4" ToolTip="删除" Width="20" Height="20" Click="buttonThermalCameraDriveDelete_Click" />
+                                        <TextBox x:Name="tbThermalCameraDrive" Text="{Binding ThermalCameraNewDriveValue}" Style="{StaticResource TextBoxBaseBaseStyle}" BorderBrush="CadetBlue" BorderThickness="1.5" VerticalAlignment="Center" Margin="5,0" HorizontalAlignment="Stretch" Height="25" VerticalContentAlignment="Center" Width="40" Padding="1"/>
+                                        <ToggleButton Style="{StaticResource ToggleButtonCustom}" IsChecked="{Binding ThermalCameraNewDriveType}" Width="20" Height="20" HorizontalAlignment="Right">
+                                            <hc:StatusSwitchElement.CheckedElement>
+                                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="A" Background="{DynamicResource SuccessBrush}" Foreground="{DynamicResource TextIconBrush}" Padding="5,5,5,5"/>
+                                            </hc:StatusSwitchElement.CheckedElement>
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="W" Background="{DynamicResource WarningBrush}" Foreground="{DynamicResource TextIconBrush}" Padding="5,5,5,5"/>
+                                        </ToggleButton>
+                                        <Button x:Name="buttonThermalCameraDriveAdd" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource AddGeometry}" Padding="4" ToolTip="新增" Width="20" Height="20"  Margin="5,0,5,0" Click="buttonThermalCameraDriveAdd_Click" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                        <TextBlock Text="扫描@" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                        <ComboBox Style="{StaticResource ComboBoxBaseStyle}" ItemsSource="{Binding ThermMeasNameList}" SelectedItem="{Binding ThermMeasName}" BorderBrush="CadetBlue" BorderThickness="1.5" Width="185" HorizontalAlignment="Center" Height="25" Margin="5,0,5,0" Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MinHeight="25" SelectionChanged="cbThermMeasNameList_SelectionChanged"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Expander>
+                        </StackPanel>
+                    </Grid>
+                    <!--参数LIMIT设置-->
+                    <TabControl  Grid.Column="1" Margin="10,0,2,0">
+                        <!--LIV扫描数据参数-->
+                        <TabItem Background="{StaticResource BackgroundBrush}">
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                                    <Image Source="/Resources/LIV.png" Width="20" Height="20" VerticalAlignment="Center" Stretch="Fill"/>
+                                    <TextBlock Text="LIV扫描数据参数" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <Grid>
+                                <!--定义了2行-->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100*"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <!--列表-->
+                                <DataGrid Name="dataGridLivLimit" Grid.Row="0" AutoGenerateColumns="False" ItemsSource="{Binding LivTestLimitData}" BorderThickness="1" Background="LightCyan" >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="序号" Width="60*" Binding="{Binding Id}"/>
+                                        <DataGridTextColumn Header="参数名称" Width="120*" Binding="{Binding ParamName}" FontWeight="Bold"/>
+                                        <DataGridComboBoxColumn  Header="参数类型" Width="120*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=ParamType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=ParamTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=ParamType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=ParamTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridTextColumn Header="驱动值" Width="100*" Binding="{Binding DriveValue}"/>
+                                        <DataGridComboBoxColumn  Header="驱动类型" Width="80*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridComboBoxColumn  Header="温度" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveTemp}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTempList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveTemp}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTempList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridTextColumn Header="最小值" Width="80*" Binding="{Binding ParamMin}"/>
+                                        <DataGridTextColumn Header="最大值" Width="80*" Binding="{Binding ParamMax}"/>
+                                        <DataGridComboBoxColumn  Header="报表显示" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=IsReport}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=IsReportList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=IsReport}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=IsReportList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <!--按钮-->
+                                <UniformGrid Grid.Row="1" Rows="1" Height="30" Margin="0,5,0,0">
+                                    <Button x:Name="buttonLivLimitAdd" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource AddGeometry}" Padding="4" ToolTip="新增" Width="20" Height="20" Margin="5,0" Click="buttonLivLimitAdd_Click"/>
+                                    <Button x:Name="buttonLivLimitDelete" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}" Padding="4" ToolTip="删除" Width="20" Height="20" Margin="5,0" Click="buttonLivLimitDelete_Click"/>
+                                </UniformGrid>
+                            </Grid>
+                        </TabItem>
+
+                        <!--光谱参数LIMIT设置-->
+                        <TabItem Background="{StaticResource BackgroundBrush}">
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                                    <Image Source="/Resources/Spectrum.png" Width="20" Height="20" VerticalAlignment="Center" Stretch="Fill"/>
+                                    <TextBlock Text="光谱扫描数据参数" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <Grid>
+                                <!--定义了2行-->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100*"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <!--列表-->
+                                <DataGrid Name="dataGridSpLimit" Grid.Row="0" AutoGenerateColumns="False" ItemsSource="{Binding SpTestLimitData}" BorderThickness="1" Background="LightCyan">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="序号" Width="60*" Binding="{Binding Id}"/>
+                                        <DataGridTextColumn Header="参数名称" Width="120*" Binding="{Binding ParamName}"  FontWeight="Bold"/>
+                                        <DataGridComboBoxColumn  Header="参数类型" Width="120*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=ParamType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=ParamTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=ParamType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=ParamTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridComboBoxColumn  Header="驱动值" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveValue}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveValueList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveValue}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveValueList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridComboBoxColumn  Header="驱动类型" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridComboBoxColumn  Header="温度" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveTemp}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTempList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveTemp}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTempList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridTextColumn Header="最小值" Width="80*" Binding="{Binding ParamMin}"/>
+                                        <DataGridTextColumn Header="最大值" Width="80*" Binding="{Binding ParamMax}"/>
+                                        <DataGridComboBoxColumn  Header="报表显示" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=IsReport}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=IsReportList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=IsReport}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=IsReportList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <!--按钮-->
+                                <UniformGrid Grid.Row="1" Rows="1" Height="30" Margin="0,5,0,0">
+                                    <Button x:Name="buttonSpLimitAdd" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource AddGeometry}" Padding="4" ToolTip="新增" Width="20" Height="20" Margin="5,0" Click="buttonSpLimitAdd_Click"/>
+                                    <Button x:Name="buttonSpLimitDelete" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}" Padding="4" ToolTip="删除" Width="20" Height="20" Margin="5,0" Click="buttonSpLimitDelete_Click"/>
+                                </UniformGrid>
+                            </Grid>
+                        </TabItem>
+
+                        <!--数值孔径参数LIMIT设置-->
+                        <TabItem Background="{StaticResource BackgroundBrush}">
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                                    <Image Source="/Resources/NA.png" Width="20" Height="20" VerticalAlignment="Center" Stretch="Fill"/>
+                                    <TextBlock Text="数值孔径数据参数" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <Grid>
+                                <!--定义了2行-->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100*"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <!--列表-->
+                                <DataGrid Name="dataGridNaLimit" Grid.Row="0" AutoGenerateColumns="False" ItemsSource="{Binding NaTestLimitData}" BorderThickness="1" Background="LightCyan">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="序号" Width="60*" Binding="{Binding Id}"/>
+                                        <DataGridTextColumn Header="参数名称" Width="120*" Binding="{Binding ParamName}"  FontWeight="Bold"/>
+                                        <DataGridComboBoxColumn  Header="参数类型" Width="120*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=ParamType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=ParamTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=ParamType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=ParamTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridComboBoxColumn  Header="驱动值" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveValue}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveValueList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveValue}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveValueList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridComboBoxColumn  Header="驱动类型" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridComboBoxColumn  Header="温度" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveTemp}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTempList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveTemp}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTempList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridTextColumn Header="最小值" Width="80*" Binding="{Binding ParamMin}"/>
+                                        <DataGridTextColumn Header="最大值" Width="80*" Binding="{Binding ParamMax}"/>
+                                        <DataGridComboBoxColumn  Header="报表显示" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=IsReport}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=IsReportList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=IsReport}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=IsReportList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <!--按钮-->
+                                <UniformGrid Grid.Row="1" Rows="1" Height="30" Margin="0,5,0,0">
+                                    <Button x:Name="buttonNALimitAdd" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource AddGeometry}" Padding="4" ToolTip="新增" Width="20" Height="20" Margin="5,0" Click="buttonNALimitAdd_Click"/>
+                                    <Button x:Name="buttonNALimitDelete" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}" Padding="4" ToolTip="删除" Width="20" Height="20" Margin="5,0" Click="buttonNALimitDelete_Click"/>
+                                </UniformGrid>
+                            </Grid>
+                        </TabItem>
+
+                        <!--热像参数LIMIT设置-->
+                        <TabItem Background="{StaticResource BackgroundBrush}" Visibility="{Binding ThermCamVisibility}">
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                                    <Image Source="/Resources/ThermalCamera.PNG" Width="20" Height="20" VerticalAlignment="Center" Stretch="Fill"/>
+                                    <TextBlock Text="热像温度数据参数" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <Grid>
+                                <!--定义了2行-->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100*"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <!--列表-->
+                                <DataGrid Name="dataGridThermalScanLimit" Grid.Row="0" AutoGenerateColumns="False" ItemsSource="{Binding ThermTestLimitData}" BorderThickness="1" Background="LightCyan">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="序号" Width="60*" Binding="{Binding Id}"/>
+                                        <DataGridTextColumn Header="参数名称" Width="120*" Binding="{Binding ParamName}"  FontWeight="Bold"/>
+                                        <DataGridComboBoxColumn  Header="参数类型" Width="120*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=ParamType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=ParamTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=ParamType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=ParamTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridComboBoxColumn  Header="驱动值" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveValue}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveValueList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveValue}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveValueList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridComboBoxColumn  Header="驱动类型" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridComboBoxColumn  Header="温度" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveTemp}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTempList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=DriveTemp}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=DriveTempList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridTextColumn Header="最小值" Width="80*" Binding="{Binding ParamMin}"/>
+                                        <DataGridTextColumn Header="最大值" Width="80*" Binding="{Binding ParamMax}"/>
+                                        <DataGridComboBoxColumn  Header="报表显示" Width="100*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=IsReport}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=IsReportList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=IsReport}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=IsReportList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <!--按钮-->
+                                <UniformGrid Grid.Row="1" Rows="1" Height="30" Margin="0,5,0,0">
+                                    <Button x:Name="buttonThmLimitAdd" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource AddGeometry}" Padding="4" ToolTip="新增" Width="20" Height="20" Margin="5,0" Click="buttonThmLimitAdd_Click"/>
+                                    <Button x:Name="buttonThmLimitDelete" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}" Padding="4" ToolTip="删除" Width="20" Height="20" Margin="5,0" Click="buttonThmLimitDelete_Click"/>
+                                </UniformGrid>
+                            </Grid>
+                        </TabItem>
+
+                        <!--测试参数差异LIMIT设置-->
+                        <TabItem Background="{StaticResource BackgroundBrush}">
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                                    <Image Source="/Resources/Delta.png" Width="20" Height="20" VerticalAlignment="Center" Stretch="Fill"/>
+                                    <TextBlock Text="老化前后数据差异" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <Grid>
+                                <!--定义了2行-->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100*"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <!--列表-->
+                                <DataGrid Name="dataGridDeltaLimit" Grid.Row="0" AutoGenerateColumns="False" ItemsSource="{Binding DeltaLimitData}" BorderThickness="1" Background="LightCyan">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="序号" Width="60*" Binding="{Binding Id}"/>
+                                        <DataGridTextColumn Header="参数名称" Width="120*" Binding="{Binding ParamName}"  FontWeight="Bold"/>
+                                        <DataGridComboBoxColumn  Header="参数类型" Width="120*">
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=ParamType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=ParamTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="SelectedValue" Value="{Binding Path=ParamType}" />
+                                                    <Setter Property="ItemsSource" Value="{Binding Path=ParamTypeList}" />
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                        </DataGridComboBoxColumn>
+                                        <DataGridTextColumn Header="最小值" Width="80*" Binding="{Binding ParamMin}"/>
+                                        <DataGridTextColumn Header="最大值" Width="80*" Binding="{Binding ParamMax}"/>
+                                        <DataGridComboBoxColumn  Header="报表显示" Width="100*">
+                                        <DataGridComboBoxColumn.EditingElementStyle>
+                                            <Style TargetType="ComboBox">
+                                                <Setter Property="SelectedValue" Value="{Binding Path=IsReport}" />
+                                                <Setter Property="ItemsSource" Value="{Binding Path=IsReportList}" />
+                                            </Style>
+                                        </DataGridComboBoxColumn.EditingElementStyle>
+                                        <DataGridComboBoxColumn.ElementStyle>
+                                            <Style TargetType="ComboBox">
+                                                <Setter Property="SelectedValue" Value="{Binding Path=IsReport}" />
+                                                <Setter Property="ItemsSource" Value="{Binding Path=IsReportList}" />
+                                            </Style>
+                                        </DataGridComboBoxColumn.ElementStyle>
+                                    </DataGridComboBoxColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <!--按钮-->
+                                <UniformGrid Grid.Row="1" Rows="1" Height="30" Margin="0,5,0,0">
+                                    <Button x:Name="buttonDeltaLimitAdd" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource AddGeometry}" Padding="4" ToolTip="新增" Width="20" Height="20" Margin="5,0" Click="buttonDeltaLimitAdd_Click"/>
+                                    <Button x:Name="buttonDeltaLimitDelete" Style="{StaticResource ButtonInfo}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}" Padding="4" ToolTip="删除" Width="20" Height="20" Margin="5,0" Click="buttonDeltaLimitDelete_Click"/>
+                                </UniformGrid>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,188 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyVersion>3.2.1.8</AssemblyVersion>
+    <FileVersion>3.2.1.8</FileVersion>
+    <ApplicationIcon>Vsstec.ico</ApplicationIcon>
+    <PackageId>VsstecLaserTest</PackageId>
+    <Authors>Vsstec</Authors>
+    <Product>VsstecLaserTest</Product>
+    <AssemblyName>VsstecLaserTest</AssemblyName>
+    <Copyright>Vsstec Copyright</Copyright>
+    <Version>3.2.1.7</Version>
+    <Platforms>x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>TRACE;x86</DefineConstants>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\CosAlgorithm_new.cs" />
+    <Compile Remove="Driver\ItDriver_new.cs" />
+    <Compile Remove="Driver\ItDriver_old.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\About.png" />
+    <None Remove="Resources\Barcode.png" />
+    <None Remove="Resources\Beam.PNG" />
+    <None Remove="Resources\BgAbout.jpg" />
+    <None Remove="Resources\Calibrate.png" />
+    <None Remove="Resources\CloseConfirm.png" />
+    <None Remove="Resources\Company.png" />
+    <None Remove="Resources\Company_GT.png" />
+	<None Remove="Resources\CustomerLogo.png" />
+    <None Remove="Resources\Delta.png" />
+    <None Remove="Resources\Equip.png" />
+    <None Remove="Resources\EyeProtection.png" />
+    <None Remove="Resources\Folder.png" />
+    <None Remove="Resources\Gear.png" />
+    <None Remove="Resources\Init.png" />
+    <None Remove="Resources\Key.png" />
+    <None Remove="Resources\LaserWarn.png" />
+    <None Remove="Resources\LIV.png" />
+    <None Remove="Resources\Lock.png" />
+    <None Remove="Resources\Logon.png" />
+    <None Remove="Resources\Logout.png" />
+    <None Remove="Resources\LogoutConfirm.png" />
+    <None Remove="Resources\NA.png" />
+    <None Remove="Resources\Pause.png" />
+    <None Remove="Resources\Puzzle.png" />
+    <None Remove="Resources\Resume.png" />
+    <None Remove="Resources\Spectrum.png" />
+    <None Remove="Resources\Start.png" />
+    <None Remove="Resources\Stop.png" />
+    <None Remove="Resources\System.png" />
+    <None Remove="Resources\Test.png" />
+    <None Remove="Resources\ThermalCamera.PNG" />
+    <None Remove="Resources\Tool.png" />
+    <None Remove="Resources\UnLock.png" />
+    <None Remove="Resources\Usb.png" />
+    <None Remove="Resources\User.png" />
+    <None Remove="Resources\Vsstec.ico" />
+    <None Remove="Resources\Warn.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HandyControl" Version="3.2.0" />
+    <PackageReference Include="LiveCharts.Wpf.Core" Version="0.9.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NModbus.Serial" Version="3.0.72" />
+    <PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.6.0.20220608" />
+    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.11.0.20250507" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="System.Data.OleDb" Version="6.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ReachFramework" />
+    <Reference Include="System.Printing" />
+    <Reference Include="Ivi.Visa">
+      <HintPath>C:\Program Files\IVI Foundation\VISA\Microsoft.NET\Framework64\v2.0.50727\VISA.NET Shared Components 7.2.0\Ivi.Visa.dll</HintPath>
+    </Reference>
+    <Reference Include="NationalInstruments.Common">
+      <HintPath>C:\Program Files (x86)\National Instruments\Measurement Studio\DotNET\v4.0\AnyCPU\NationalInstruments.Common 19.0.40\NationalInstruments.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="NationalInstruments.Visa">
+      <HintPath>C:\Program Files\IVI Foundation\VISA\Microsoft.NET\Framework64\v4.0.30319\NI VISA.NET 24.8\NationalInstruments.Visa.dll</HintPath>
+    </Reference>
+    <Reference Include="NETOmniDriver-NET40">
+      <HintPath>DLL\NETOmniDriver-NET40.dll</HintPath>
+    </Reference>
+    <Reference Include="NF.Interfaces">
+      <HintPath>DLL\NF.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualC">
+      <HintPath>DLL\Microsoft.VisualC.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualC.STLCLR">
+      <HintPath>DLL\Microsoft.VisualC.STLCLR.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\About.png" />
+    <Resource Include="Resources\Barcode.png" />
+    <Resource Include="Resources\Beam.PNG" />
+    <Resource Include="Resources\BgAbout.jpg" />
+    <Resource Include="Resources\Calibrate.png" />
+    <Resource Include="Resources\CloseConfirm.png" />
+    <Resource Include="Resources\Company.png" />
+    <Resource Include="Resources\Company_GT.png" />
+    <Resource Include="Resources\CustomerLogo.png" />
+    <Resource Include="Resources\Delta.png" />
+    <Resource Include="Resources\Equip.png" />
+    <Resource Include="Resources\EyeProtection.png" />
+    <Resource Include="Resources\Folder.png" />
+    <Resource Include="Resources\Gear.png" />
+    <Resource Include="Resources\Init.png" />
+    <Resource Include="Resources\Key.png" />
+    <Resource Include="Resources\LaserWarn.png" />
+    <Resource Include="Resources\LIV.png" />
+    <Resource Include="Resources\Lock.png" />
+    <Resource Include="Resources\Logon.png" />
+    <Resource Include="Resources\Logout.png" />
+    <Resource Include="Resources\LogoutConfirm.png" />
+    <Resource Include="Resources\NA.png" />
+    <Resource Include="Resources\Pause.png" />
+    <Resource Include="Resources\Puzzle.png" />
+    <Resource Include="Resources\Resume.png" />
+    <Resource Include="Resources\Spectrum.png" />
+    <Resource Include="Resources\Start.png" />
+    <Resource Include="Resources\Stop.png" />
+    <Resource Include="Resources\System.png" />
+    <Resource Include="Resources\Test.png" />
+    <Resource Include="Resources\ThermalCamera.PNG" />
+    <Resource Include="Resources\Tool.png" />
+    <Resource Include="Resources\UnLock.png" />
+    <Resource Include="Resources\Usb.png" />
+    <Resource Include="Resources\User.png" />
+    <Resource Include="Resources\Vsstec.ico" />
+    <Resource Include="Resources\Warn.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DLL\common32.dll" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="DLL\OmniDriver32.dll" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="DLL\gclib.dll" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="DLL\gclibo.dll" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="DLL\NatDL_32.dll" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="DLL\NatHRTiming_32.dll" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="DLL\NatRS23232.dll" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="DLL\NatUSBWin_32.dll" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="DLL\SpamSharp.dll" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="CopyOmniNativeDlls" AfterTargets="Build">
+    <Copy SourceFiles="DLL\common32.dll;DLL\OmniDriver32.dll;DLL\gclib.dll;DLL\gclibo.dll;DLL\NatDL_32.dll;DLL\NatHRTiming_32.dll;DLL\NatRS23232.dll;DLL\NatUSBWin_32.dll;DLL\SpamSharp.dll" DestinationFolder="$(OutDir)" Condition="Exists('DLL\OmniDriver32.dll')" />
+  </Target>
+
+  <ItemGroup>
+    <Page Update="Forms\EditThermMeasWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Forms\ReportViewVst.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Forms\ThermMeasureWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
+</Project>
